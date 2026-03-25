@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helen Jervis | Architect Scrum Master</title>
+    <style>
+        :root {
+            --burgundy-dark: #4A0E1B;
+            --burgundy: #6B1C2A;
+            --burgundy-mid: #7D2535;
+            --burgundy-light: #8E2E40;
+            --burgundy-glow: #A3384D;
+            --cream: #FAF5F0;
+            --text: #2C2C2C;
+            --text-light: #F0E8E0;
+            --sidebar-width: 240px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: var(--text);
+            background: var(--cream);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--burgundy-dark);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 0;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-brand h2 {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        .sidebar-brand span {
+            color: var(--burgundy-glow);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: block;
+            margin-top: 0.3rem;
+        }
+
+        .sidebar nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            padding: 0 0.75rem;
+        }
+
+        .sidebar nav a {
+            color: rgba(240, 232, 224, 0.7);
+            text-decoration: none;
+            padding: 0.7rem 0.75rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.03em;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+            color: var(--text-light);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .sidebar-social {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .sidebar-social a {
+            color: rgba(240, 232, 224, 0.5);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+        }
+
+        .sidebar-social a:hover {
+            color: var(--text-light);
+        }
+
+        /* Mobile hamburger */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 200;
+            background: var(--burgundy-dark);
+            border: none;
+            color: var(--text-light);
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.4rem;
+            line-height: 1;
+        }
+
+        /* Main content */
+        .main {
+            margin-left: var(--sidebar-width);
+        }
+
+        /* Hero / Cover */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--burgundy-dark) 0%, var(--burgundy) 40%, var(--burgundy-mid) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(255,255,255,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: var(--text-light);
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            border: 3px solid rgba(255,255,255,0.15);
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            color: rgba(240, 232, 224, 0.7);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .org {
+            font-size: 0.9rem;
+            color: rgba(240, 232, 224, 0.5);
+            letter-spacing: 0.06em;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(240, 232, 224, 0.35);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .scroll-hint::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 30px;
+            background: rgba(240, 232, 224, 0.2);
+            margin: 0.5rem auto 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.35; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--burgundy);
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--burgundy-light);
+            letter-spacing: 0.03em;
+        }
+
+        section p {
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+            color: #444;
+            font-size: 0.95rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--burgundy-light), rgba(142, 46, 64, 0.2));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.4rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--burgundy);
+            border: 2px solid var(--cream);
+            transform: translateX(-4px);
+        }
+
+        .timeline-item h3 {
+            font-size: 1.05rem;
+            color: var(--burgundy-dark);
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+        }
+
+        .timeline-item .role {
+            font-size: 0.9rem;
+            color: var(--burgundy-mid);
+            font-style: italic;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-item .date {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 0.6rem;
+        }
+
+        .timeline-item p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-card {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--burgundy-light);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        .skill-card h4 {
+            font-size: 0.85rem;
+            color: var(--burgundy);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .skill-card p {
+            font-size: 0.8rem;
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Interests */
+        .interests-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .interest-tag {
+            background: white;
+            color: var(--burgundy);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(107, 28, 42, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+            font-size: 0.8rem;
+            border-top: 1px solid #e8e0d8;
+            margin-left: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            section {
+                padding: 3rem 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-photo {
+                width: 140px;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Mobile menu toggle -->
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <h2>Helen Jervis</h2>
+        <span>PhD</span>
+    </div>
+    <nav>
+        <a href="#hero" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#advocacy">Advocacy</a>
+        <a href="#interests">Beyond Work</a>
+    </nav>
+    <div class="sidebar-social">
+        <a href="https://www.linkedin.com/in/helen-j-7573676/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://wearetechwomen.com/portfolio/helen-jervis-architect-scrum-master-morgan-stanley/" target="_blank" rel="noopener">WeAreTechWomen</a>
+    </div>
+</aside>
+
+<!-- Main content -->
+<div class="main">
+
+    <!-- Hero / Cover -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <img src="profile.jpg" alt="Helen Jervis" class="hero-photo">
+            <h1>Helen Jervis</h1>
+            <p class="subtitle">Architect Scrum Master</p>
+            <p class="org">Funding &amp; Finance Technology &middot; Morgan Stanley</p>
+        </div>
+        <div class="scroll-hint">Scroll</div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <h2>About</h2>
+        <p>Helen works as an Architect Scrum Master within the Funding and Finance Technology division of Morgan Stanley. She joined the firm in 2016 as part of the 'Return to Work' programme, leading agile teams across a range of projects, most recently in the re-architecture of core finance systems.</p>
+        <p>She drives timely delivery and high client engagement in complex, interdependent systems and processes, bridging the gap between end users and developers, especially within core infrastructure platforms.</p>
+        <p>Helen started her career with a PhD in Chemistry and spent two years in Japan researching liquid crystals at the Osaka National Research Institute. She found her niche in client-focused and business development roles, working with clients and developers to deliver on business needs &mdash; most recently at a boutique software house providing market data and analytics platforms to asset managers, hedge funds, and banks.</p>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience">
+        <h2>Experience</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>Morgan Stanley</h3>
+                <p class="role">Architect Scrum Master / Project Manager / Product Owner</p>
+                <p class="date">October 2016 &ndash; Present &middot; London</p>
+                <p>Finance and Risk IT change within the Funding &amp; Finance Technology division. Stakeholder management, process efficiency, and AI solution development in a regulated environment. Leading agile teams in the re-architecture of core finance systems.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Career Break</h3>
+                <p class="role">Full-time Parent</p>
+                <p class="date">2012 &ndash; 2016</p>
+                <p>Four years dedicated to family, before returning to the workplace through the Morgan Stanley Return To Work programme.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Xenomorph Software Ltd</h3>
+                <p class="role">Account Manager</p>
+                <p class="date">September 2006 &ndash; January 2012</p>
+                <p>Managed client relationships for a provider of analytics and data management solutions to investment banks, hedge funds, and asset management institutions worldwide.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Succinct Communications</h3>
+                <p class="role">Account Manager</p>
+                <p class="date">March 2005 &ndash; September 2006</p>
+                <p>Medical communications and scientific education, working across global pharmaceutical programmes from pre-launch to post-patent expiry.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Surface Measurement Systems</h3>
+                <p class="role">Product Specialist</p>
+                <p class="date">2001 &ndash; March 2005</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Osaka National Research Institute</h3>
+                <p class="role">Post Doctoral Researcher</p>
+                <p class="date">October 1999 &ndash; 2001 &middot; Japan</p>
+                <p>Two years of post-doctoral research in liquid crystals in Osaka, Japan.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>PhD in Chemistry</h3>
+                <p class="date">Completed 1999</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+        <h2>Skills &amp; Expertise</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <h4>Agile Delivery</h4>
+                <p>Scrum mastery, sprint planning, and timely delivery of complex programmes</p>
+            </div>
+            <div class="skill-card">
+                <h4>Stakeholder Management</h4>
+                <p>Bridging the gap between end users and development teams</p>
+            </div>
+            <div class="skill-card">
+                <h4>Systems Architecture</h4>
+                <p>Re-architecture of core finance systems and infrastructure platforms</p>
+            </div>
+            <div class="skill-card">
+                <h4>Financial Services</h4>
+                <p>Banking, risk, and finance technology in regulated environments</p>
+            </div>
+            <div class="skill-card">
+                <h4>Process Efficiency</h4>
+                <p>Streamlining complex, interdependent systems and processes</p>
+            </div>
+            <div class="skill-card">
+                <h4>Coaching &amp; Mentoring</h4>
+                <p>Mentoring returners and advocating for flexible working</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advocacy -->
+    <section id="advocacy">
+        <h2>Advocacy &amp; Mentoring</h2>
+        <p>Helen is a strong advocate of flexible part-time working based around school hours. Within Morgan Stanley, she acts as a mentor to other returners, easing the transition back to the workplace.</p>
+        <p>She took four years out of the workplace whilst her children were small, and considers herself very fortunate to have come across the Morgan Stanley Return To Work programme. Her experience drives her passion for supporting others on the same journey.</p>
+    </section>
+
+    <!-- Interests -->
+    <section id="interests">
+        <h2>Beyond Work</h2>
+        <p>Helen is a keen sportswoman who has spent a good amount of time climbing, playing squash, and running ultramarathons &mdash; until injury caught up with her. These days, her two children and a bicycle keep her entertained outside of work, in the rolling countryside of Buckinghamshire.</p>
+        <div class="interests-list">
+            <span class="interest-tag">Ultramarathons</span>
+            <span class="interest-tag">Climbing</span>
+            <span class="interest-tag">Squash</span>
+            <span class="interest-tag">Cycling</span>
+            <span class="interest-tag">Buckinghamshire</span>
+        </div>
+    </section>
+
+    <footer>&copy; Helen Jervis</footer>
+</div>
+
+<script>
+    // Highlight active sidebar link on scroll
+    const sections = document.querySelectorAll('section, .hero');
+    const navLinks = document.querySelectorAll('.sidebar nav a');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id || entry.target.getAttribute('id');
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                });
+            }
+        });
+    }, { threshold: 0.3 });
+
+    sections.forEach(section => {
+        if (section.id) observer.observe(section);
+    });
+
+    // Close mobile menu on link click
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.remove('open');
+        });
+    });
+</script>
+
+</body>
+</html>
