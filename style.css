@@ -383,4 +383,8 @@ footer {
         width: 140px;
         height: 140px;
     }
+
+    .sidebar-brand {
+        padding-top: 3.5rem;
+    }
 }
