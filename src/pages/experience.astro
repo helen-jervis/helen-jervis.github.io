@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import { roles, strengths } from '../data/experience';
+---
+
+<Base
+  title="Experience"
+  description="Helen Jervis’s career: Architect Scrum Master at Morgan Stanley since 2016, earlier account management in financial software and medical communications, and a PhD and postdoctoral research in chemistry."
+>
+  <article class="page wrap">
+    <h1>Experience</h1>
+    <p class="lede">From chemistry research, through client management, to delivering change in finance technology.</p>
+
+    <section aria-labelledby="career">
+      <h2 id="career" class="section-label">Career</h2>
+      <ol class="roles">
+        {roles.map((role) => (
+          <li>
+            <p class="when">{role.when}</p>
+            <div>
+              <h3>
+                {role.org}
+                {role.place && <span class="place">, {role.place}</span>}
+              </h3>
+              {role.title && <p class="title">{role.title}</p>}
+              {role.summary && <p class="summary">{role.summary}</p>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section aria-labelledby="skills">
+      <h2 id="skills" class="section-label">Skills</h2>
+      <dl class="strengths">
+        {strengths.map(({ name, detail }) => (
+          <div>
+            <dt>{name}</dt>
+            <dd>{detail}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  </article>
+</Base>

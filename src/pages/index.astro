@@ -1,0 +1,110 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import photo from '../assets/helen.jpg';
+import { site } from '../data/site';
+
+const home = new URL('/', Astro.site).href;
+const image = await getImage({ src: photo, width: 800, height: 800, format: 'jpg' });
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${home}#website`,
+      url: home,
+      name: site.name,
+      inLanguage: 'en-GB',
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': `${home}#profile`,
+      url: home,
+      isPartOf: { '@id': `${home}#website` },
+      mainEntity: { '@id': `${home}#person` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${home}#person`,
+      name: site.name,
+      givenName: 'Helen',
+      familyName: 'Jervis',
+      honorificSuffix: 'PhD',
+      jobTitle: site.jobTitle,
+      worksFor: { '@type': 'Organization', name: site.employer },
+      image: new URL(image.src, Astro.site).href,
+      url: home,
+      sameAs: [site.links.linkedin, site.links.weAreTechWomen],
+      knowsAbout: ['Scrum', 'Agile software delivery', 'Finance technology', 'Return to work programmes'],
+    },
+  ],
+};
+---
+
+<Base jsonLd={jsonLd}>
+  <section class="intro wrap">
+    <div class="intro-text">
+      <h1>Helen Jervis</h1>
+      <p class="lede">Architect Scrum Master in Funding &amp; Finance Technology at Morgan Stanley.</p>
+      <p>
+        I lead agile teams in London, most recently on the re-architecture of the firm’s core finance
+        systems, and a lot of my time goes on making sure the people who use those systems and the
+        people who build them understand each other.
+      </p>
+      <p>
+        I started out as a chemist. After a PhD and two years researching liquid crystals in Osaka, I
+        moved into client-facing roles in science and then financial software, took four years out
+        while my children were small, and came back in 2016 through Morgan Stanley’s Return to Work
+        programme.
+      </p>
+      <p class="more"><a href="/about/">More about me</a> <a href="/experience/">Experience</a></p>
+    </div>
+    <Picture
+      class="intro-photo"
+      src={photo}
+      formats={['avif', 'webp']}
+      widths={[480, 800]}
+      sizes="(min-width: 52rem) 26rem, 100vw"
+      alt="Helen Jervis in a burgundy coat, standing in a field under a blue sky"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </section>
+
+  <section class="brief wrap" aria-labelledby="brief">
+    <h2 id="brief" class="section-label">In brief</h2>
+    <dl>
+      <div>
+        <dt>Now</dt>
+        <dd>Architect Scrum Master at Morgan Stanley, since 2016</dd>
+      </div>
+      <div>
+        <dt>Before that</dt>
+        <dd>Account management in market data software and medical communications</dd>
+      </div>
+      <div>
+        <dt>To begin with</dt>
+        <dd>PhD in Chemistry, then postdoctoral research in Osaka</dd>
+      </div>
+      <div>
+        <dt>Outside work</dt>
+        <dd>Two children, a bicycle and the Buckinghamshire countryside</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="band" aria-labelledby="returning">
+    <div class="wrap">
+      <h2 id="returning" class="section-label">Returning to work</h2>
+      <p class="statement">
+        I took four years out while my children were small, so I know how hard the way back can be.
+      </p>
+      <p class="band-text">
+        These days I mentor other returners at Morgan Stanley and make the case for flexible,
+        part-time working built around school hours.
+      </p>
+      <p class="more"><a href="/returning-to-work/">More on returning to work</a></p>
+    </div>
+  </section>
+</Base>

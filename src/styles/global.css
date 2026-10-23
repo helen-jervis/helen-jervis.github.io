@@ -1,0 +1,416 @@
+:root {
+  --paper: #faf6f1;
+  --paper-deep: #f1e9e0;
+  --ink: #2a2220;
+  --ink-soft: #5c514c;
+  --ink-faint: #85786f;
+  --rule: #e2d7cb;
+  --accent: #7a2233;
+  --band: #4a0e1b;
+  --band-ink: #f3e9df;
+
+  --measure: 36rem;
+  --wrap: 66rem;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1c1517;
+    --paper-deep: #261d1f;
+    --ink: #ece3da;
+    --ink-soft: #c2b5ad;
+    --ink-faint: #94877f;
+    --rule: #3b2f31;
+    --accent: #e8a3b0;
+    --band: #3a0a15;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem);
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  font-variant-numeric: oldstyle-nums;
+}
+
+main {
+  flex: 1;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+p,
+dd {
+  text-wrap: pretty;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-thickness: 0.11em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.wrap {
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip {
+  position: absolute;
+  left: -100vw;
+}
+
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 10;
+  padding: 0.5rem 0.75rem;
+  background: var(--paper);
+}
+
+/* Header */
+
+.site-header {
+  background: var(--band);
+  color: var(--band-ink);
+}
+
+.site-header .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 2rem;
+  padding-block: 1.1rem;
+}
+
+.site-header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-header :focus-visible {
+  outline-color: var(--band-ink);
+}
+
+.wordmark {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.site-header ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-header nav a {
+  opacity: 0.78;
+}
+
+.site-header nav a:hover,
+.site-header nav a[aria-current='page'] {
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+}
+
+/* Shared bits */
+
+.lede {
+  font-size: 1.3em;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  max-width: 32rem;
+  margin: 0 0 1.25rem;
+}
+
+.section-label {
+  margin: 0 0 1.25rem;
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+/* Home */
+
+.intro {
+  display: grid;
+  gap: 2.5rem;
+  padding-block: clamp(2.5rem, 7vw, 5.5rem) clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.intro h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.75rem, 1.9rem + 4vw, 4.75rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+
+.intro-text > p:not(.lede) {
+  max-width: var(--measure);
+  margin: 0 0 1em;
+}
+
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding-top: 0.75rem;
+}
+
+.more a::after {
+  content: ' →';
+}
+
+.intro-photo {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 57% 50%;
+}
+
+@media (max-width: 51.99rem) {
+  .intro-photo {
+    max-width: 26rem;
+  }
+}
+
+@media (min-width: 52rem) {
+  .intro {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 4rem;
+  }
+}
+
+.brief {
+  padding-block: 2.5rem 3.5rem;
+}
+
+.brief dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+  gap: 1.75rem 2.5rem;
+  margin: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+.brief dt {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+.brief dd {
+  margin: 0.3rem 0 0;
+  line-height: 1.45;
+}
+
+.band {
+  background: var(--paper-deep);
+  padding-block: clamp(3rem, 7vw, 5rem);
+}
+
+.statement {
+  max-width: 30ch;
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.25rem);
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.band-text {
+  max-width: var(--measure);
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+/* Inner pages */
+
+.page {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem) 4rem;
+}
+
+.page h1 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(2.25rem, 1.7rem + 2.2vw, 3.4rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose > p:first-child {
+  font-size: 1.2em;
+  line-height: 1.5;
+}
+
+.prose h2 {
+  margin: 2.25em 0 0.5em;
+  font-size: 1.375rem;
+  font-weight: 600;
+}
+
+.prose p {
+  margin: 0 0 1.1em;
+}
+
+.page section {
+  margin-top: 3.5rem;
+}
+
+.roles {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.roles li {
+  display: grid;
+  gap: 0.2rem 2rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+@media (min-width: 44rem) {
+  .roles li {
+    grid-template-columns: 11rem minmax(0, 1fr);
+  }
+}
+
+.when {
+  margin: 0;
+  padding-top: 0.15rem;
+  font-size: 0.9375rem;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--ink-faint);
+}
+
+.roles h3 {
+  margin: 0;
+  font-size: 1.1875rem;
+  font-weight: 600;
+}
+
+.place {
+  font-weight: 400;
+}
+
+.roles .title {
+  margin: 0.15rem 0 0;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.roles .summary {
+  max-width: var(--measure);
+  margin: 0.6rem 0 0;
+}
+
+.strengths {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1.5rem 3rem;
+  margin: 0;
+}
+
+.strengths dt {
+  font-weight: 600;
+}
+
+.strengths dd {
+  margin: 0.2rem 0 0;
+  color: var(--ink-soft);
+}
+
+/* Footer */
+
+.site-footer {
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 0.9375rem;
+}
+
+.site-footer .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-block: 1.75rem 2.25rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer a {
+  color: inherit;
+}
