@@ -2,6 +2,7 @@ export const site = {
   name: 'Helen Jervis',
   jobTitle: 'Architect Scrum Master',
   employer: 'Morgan Stanley',
+  location: 'London',
   description:
     'Helen Jervis, Architect Scrum Master at Morgan Stanley in London. Chemistry PhD, agile delivery lead and mentor to people returning to work.',
   // Paste the content value of the Google Search Console "HTML tag" here to verify ownership.

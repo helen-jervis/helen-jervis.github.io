@@ -4,12 +4,31 @@ import { nav, site } from '../data/site';
 const path = Astro.url.pathname;
 ---
 
+<div class="site-bar">
+  <div class="wrap">{site.employer} · {site.location}</div>
+</div>
 <header class="site-header">
   <div class="wrap">
-    <a class="wordmark" href="/" aria-current={path === '/' ? 'page' : undefined}>
-      {site.name}
+    <a class="brand" href="/" aria-current={path === '/' ? 'page' : undefined}>
+      <span class="brand-mark" aria-hidden="true">HJ</span>
+      <span>
+        <span class="brand-name">{site.name}</span>
+        <span class="brand-sub">{site.jobTitle}</span>
+      </span>
     </a>
-    <nav aria-label="Main">
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Menu"
+      aria-expanded="false"
+      aria-controls="site-nav"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path class="bars" d="M4 7h16M4 12h16M4 17h16" />
+        <path class="cross" d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+    <nav id="site-nav" aria-label="Main">
       <ul>
         {nav.map(({ href, label }) => (
           <li>
@@ -22,3 +41,25 @@ const path = Astro.url.pathname;
     </nav>
   </div>
 </header>
+
+<!-- Inline so the menu is collapsed before first paint; without JS the links simply stay visible. -->
+<script is:inline>
+  (() => {
+    const header = document.querySelector('.site-header');
+    const toggle = header.querySelector('.menu-toggle');
+
+    const setOpen = (open) => {
+      header.dataset.menu = open ? 'open' : 'closed';
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+
+    setOpen(false);
+    toggle.addEventListener('click', () => setOpen(header.dataset.menu !== 'open'));
+    header.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && header.dataset.menu === 'open') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  })();
+</script>

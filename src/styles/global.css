@@ -9,24 +9,14 @@
   --band: #4a0e1b;
   --band-ink: #f3e9df;
 
-  --measure: 36rem;
-  --wrap: 66rem;
-  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --serif: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  color-scheme: light dark;
-}
+  --measure: 38rem;
+  --wrap: 70rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #1c1517;
-    --paper-deep: #261d1f;
-    --ink: #ece3da;
-    --ink-soft: #c2b5ad;
-    --ink-faint: #94877f;
-    --rule: #3b2f31;
-    --accent: #e8a3b0;
-    --band: #3a0a15;
-  }
+  color-scheme: light;
 }
 
 *,
@@ -38,6 +28,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* Keep anchor targets and focused links clear of the sticky header */
+  scroll-padding-top: 6rem;
 }
 
 body {
@@ -47,11 +39,10 @@ body {
   flex-direction: column;
   background: var(--paper);
   color: var(--ink);
-  font-family: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem);
-  line-height: 1.6;
-  font-optical-sizing: auto;
-  font-variant-numeric: oldstyle-nums;
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
 }
 
 main {
@@ -61,8 +52,25 @@ main {
 h1,
 h2,
 h3 {
-  line-height: 1.15;
+  line-height: 1.2;
   text-wrap: balance;
+}
+
+h1,
+h2,
+.lede,
+.statement,
+.brand-name,
+.footer-name {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-variant-numeric: oldstyle-nums;
+}
+
+h1,
+h2 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 p,
@@ -78,12 +86,12 @@ img {
 
 a {
   color: var(--accent);
-  text-decoration-thickness: 0.06em;
-  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 
 a:hover {
-  text-decoration-thickness: 0.11em;
+  text-decoration-thickness: 2px;
 }
 
 :focus-visible {
@@ -115,74 +123,214 @@ a:hover {
   background: var(--paper);
 }
 
+.label,
+.section-label,
+.brief dt {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
 /* Header */
 
-.site-header {
+.site-bar {
+  overflow: hidden;
+  padding-block: 0.45rem;
   background: var(--band);
   color: var(--band-ink);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
 }
 
 .site-header .wrap {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  gap: 0.35rem 2rem;
-  padding-block: 1.1rem;
+  gap: 0.75rem 2rem;
+  padding-block: 1rem;
 }
 
-.site-header a {
-  color: inherit;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  color: var(--ink);
   text-decoration: none;
 }
 
-.site-header :focus-visible {
-  outline-color: var(--band-ink);
+.brand > span:last-child {
+  display: grid;
+  line-height: 1.15;
 }
 
-.wordmark {
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+.brand-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--band);
+  color: var(--band-ink);
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+}
+
+.brand-name {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.brand-sub {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
 }
 
 .site-header ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1.5rem;
+  gap: 0.25rem 1.75rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .site-header nav a {
-  opacity: 0.78;
+  position: relative;
+  display: block;
+  padding-block: 0.375rem;
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
 }
 
-.site-header nav a:hover,
+.site-header nav a::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.15s;
+}
+
+.site-header nav a:hover::after,
+.site-header nav a[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
 .site-header nav a[aria-current='page'] {
-  opacity: 1;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.35em;
+  color: var(--accent);
+}
+
+.menu-toggle {
+  display: none;
+}
+
+/* Small screens: collapse the nav behind a toggle (only once the script has run) */
+@media (max-width: 43.99rem) {
+  .site-header[data-menu] .wrap {
+    padding-block: 0.75rem;
+  }
+
+  .site-header[data-menu] .brand-mark {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+
+  .site-header[data-menu] .brand-name {
+    font-size: 1.3rem;
+  }
+
+  .site-header[data-menu] .menu-toggle {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: none;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .menu-toggle:hover,
+  .menu-toggle[aria-expanded='true'] {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .menu-toggle svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+  }
+
+  .menu-toggle .cross,
+  .menu-toggle[aria-expanded='true'] .bars {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] .cross {
+    display: inline;
+  }
+
+  .site-header[data-menu] nav {
+    flex-basis: 100%;
+    border-top: 1px solid var(--rule);
+  }
+
+  .site-header[data-menu='closed'] nav {
+    display: none;
+  }
+
+  .site-header[data-menu] ul {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-block: 0.5rem 0.25rem;
+  }
+
+  .site-header[data-menu] nav a {
+    padding-block: 0.625rem;
+    font-size: 1.0625rem;
+  }
 }
 
 /* Shared bits */
 
 .lede {
-  font-size: 1.3em;
-  line-height: 1.4;
-  color: var(--ink-soft);
-  max-width: 32rem;
+  max-width: 34rem;
   margin: 0 0 1.25rem;
+  font-size: 1.4em;
+  line-height: 1.45;
+  color: var(--ink-soft);
 }
 
 .section-label {
   margin: 0 0 1.25rem;
-  font-size: 1rem;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--ink-faint);
 }
 
 /* Home */
@@ -196,7 +344,6 @@ a:hover {
 .intro h1 {
   margin: 0 0 0.75rem;
   font-size: clamp(2.75rem, 1.9rem + 4vw, 4.75rem);
-  font-weight: 500;
   letter-spacing: -0.015em;
 }
 
@@ -211,6 +358,15 @@ a:hover {
   gap: 0.5rem 1.5rem;
   margin: 0;
   padding-top: 0.75rem;
+}
+
+.more a {
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.more a:hover {
+  text-decoration: underline;
 }
 
 .more a::after {
@@ -251,15 +407,9 @@ a:hover {
   border-top: 1px solid var(--rule);
 }
 
-.brief dt {
-  font-size: 0.875rem;
-  font-style: italic;
-  color: var(--ink-faint);
-}
-
 .brief dd {
-  margin: 0.3rem 0 0;
-  line-height: 1.45;
+  margin: 0.4rem 0 0;
+  line-height: 1.5;
 }
 
 .band {
@@ -290,8 +440,6 @@ a:hover {
 .page h1 {
   margin: 0 0 1.5rem;
   font-size: clamp(2.25rem, 1.7rem + 2.2vw, 3.4rem);
-  font-weight: 500;
-  letter-spacing: -0.01em;
 }
 
 .prose {
@@ -299,14 +447,17 @@ a:hover {
 }
 
 .prose > p:first-child {
-  font-size: 1.2em;
+  font-family: var(--serif);
+  font-size: 1.3em;
   line-height: 1.5;
+  color: var(--ink-soft);
 }
 
 .prose h2 {
-  margin: 2.25em 0 0.5em;
-  font-size: 1.375rem;
-  font-weight: 600;
+  margin: 2.5rem 0 0.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--rule);
+  font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.85rem);
 }
 
 .prose p {
@@ -339,7 +490,7 @@ a:hover {
 
 .when {
   margin: 0;
-  padding-top: 0.15rem;
+  padding-top: 0.1rem;
   font-size: 0.9375rem;
   font-variant-numeric: lining-nums tabular-nums;
   color: var(--ink-faint);
@@ -347,7 +498,7 @@ a:hover {
 
 .roles h3 {
   margin: 0;
-  font-size: 1.1875rem;
+  font-size: 1.125rem;
   font-weight: 600;
 }
 
@@ -357,6 +508,8 @@ a:hover {
 
 .roles .title {
   margin: 0.15rem 0 0;
+  font-family: var(--serif);
+  font-size: 1.0625rem;
   font-style: italic;
   color: var(--ink-soft);
 }
@@ -386,31 +539,50 @@ a:hover {
 
 .site-footer {
   border-top: 1px solid var(--rule);
-  color: var(--ink-faint);
-  font-size: 0.9375rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 .site-footer .wrap {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem 2rem;
-  padding-block: 1.75rem 2.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 2rem;
+  padding-block: 3rem 2.5rem;
 }
 
 .site-footer p {
   margin: 0;
 }
 
+.site-footer .footer-name {
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+  font-size: 1.35rem;
+}
+
+.site-footer .label {
+  margin-bottom: 0.5rem;
+}
+
 .site-footer ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .site-footer a {
-  color: inherit;
+  color: var(--ink-soft);
+}
+
+.site-footer a:hover {
+  color: var(--accent);
+}
+
+.copyright {
+  grid-column: 1 / -1;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 0.85rem;
 }
